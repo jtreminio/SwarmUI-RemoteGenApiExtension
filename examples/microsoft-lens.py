@@ -27,9 +27,7 @@ SUPPORTED_ASPECT_RATIOS (defaulting to 1:1).
 
 Example:
 
-    python gen_api_server.py \\
-        --host 127.0.0.1 --port 7802 \\
-        --steps 4 --cfg 1.0 --repo_id ./models/Lens-Turbo
+    python microsoft-lens.py --model Lens-Turbo
 
     curl -X POST http://localhost:7802/generate \\
         -H 'Content-Type: application/json' \\
@@ -44,6 +42,7 @@ import argparse
 import base64
 import io
 import json
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import torch
@@ -56,9 +55,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Lens text-to-image inference HTTP server"
     )
-    parser.add_argument("--repo_id", type=str, default="microsoft/Lens",
-                        help="HF repo id (or local path) of the assembled "
-                             "Lens pipeline (model_index.json + subfolders).")
+    parser.add_argument("--model", type=str, default="Lens-Turbo",
+                        help="One of 'Lens-Turbo' or 'Lens', or absolute path to model directory. Auto-downloads from Hugging Face if not local.")
     parser.add_argument("--host", type=str, default="127.0.0.1",
                         help="Bind host for the HTTP server.")
     parser.add_argument("--port", type=int, default=7802,
@@ -92,6 +90,15 @@ def parse_args() -> argparse.Namespace:
 def _torch_dtype(name: str) -> torch.dtype:
     return {"bfloat16": torch.bfloat16, "float16": torch.float16,
             "float32": torch.float32}[name]
+
+
+def _resolve_model(model: str) -> str:
+    if os.path.isdir(model):
+        return model
+    local = os.path.join("./models", model)
+    if os.path.isdir(local):
+        return local
+    return model if "/" in model else f"microsoft/{model}"
 
 
 def _generate(pipe: LensPipeline, prompt: str, *,
@@ -252,6 +259,8 @@ def main() -> None:
     args = parse_args()
 
     dtype = _torch_dtype(args.dtype)
+    model_source = _resolve_model(args.model)
+    print(f"[load] using model source: {model_source}")
 
     # Pre-load the text encoder so we can control MXFP4 dequantization. The
     # gpt-oss-20b weights on the hub are stored in MXFP4 and the loader will
@@ -269,11 +278,11 @@ def main() -> None:
         # will load as the loader sees fit.
         pass
     text_encoder = LensGptOssEncoder.from_pretrained(
-        args.repo_id, **text_encoder_kwargs
+        model_source, **text_encoder_kwargs
     )
 
     pipe = LensPipeline.from_pretrained(
-        args.repo_id, text_encoder=text_encoder, torch_dtype=dtype
+        model_source, text_encoder=text_encoder, torch_dtype=dtype
     )
 
     if args.offload:

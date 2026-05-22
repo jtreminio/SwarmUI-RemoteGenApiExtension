@@ -33,28 +33,19 @@ For the server files, some sane defaults have been selected:
 ### Microsoft Lens
 
 For [Microsoft Lens](https://github.com/microsoft/Lens), follow their installation instructions.
-
-* [Download model-1k-merge.safetensors](https://huggingface.co/zhen-nan/L2P/blob/main/model-1k-merge.safetensors) to repo root
-* Clone [microsoft/Lens-Turbo](https://huggingface.co/microsoft/Lens-Turbo) to folder `Lens-Turbo` in repo root
-* Clone [microsoft/Lens](https://huggingface.co/microsoft/Lens) to folder `Lens` in repo root
-
-Then just copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to `server.py` repo root, next to
+Copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to `server.py` repo root, next to
 [inference.py](https://github.com/microsoft/Lens/blob/main/inference.py).
 
-* For Lens-Turbo, run it with `python server.py --model ./Lens-Turbo`.
-* For Lens (non-Turbo), run it with `python server.py --model ./Lens`.
+* For Lens-Turbo, run it with `python server.py --model Lens-Turbo`.
+* For Lens (non-Turbo), run it with `python server.py --model Lens`.
 
 ## TencentYoutuResearch/T2I-L2P (Z-Image Pixel Space)
 For [TencentYoutuResearch/T2I-L2P](https://github.com/TencentYoutuResearch/T2I-L2P), follow their installation instructions.
 
-* [Download model-1k-merge.safetensors](https://huggingface.co/zhen-nan/L2P/blob/main/model-1k-merge.safetensors) to repo root
-* Clone [Tongyi-MAI/Z-Image-Turbo](https://huggingface.co/Tongyi-MAI/Z-Image-Turbo) to folder `Z-Image-Turbo` in
-    repo root (you only need `text_encoder` and `tokenizer` directory)
-
-Then just copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file to `server.py` repo root,
+Copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file to `server.py` repo root,
 next to [inference.py](https://github.com/TencentYoutuResearch/T2I-L2P/blob/main/inference.py).
 
-* Run as `python server.py`
+* Run it with `python server.py`
 
 # Development
 

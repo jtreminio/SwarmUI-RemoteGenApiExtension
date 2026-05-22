@@ -27,25 +27,82 @@ import torch
 from diffsynth.pipelines.z_image_L2P import ModelConfig, ZImagePipeline
 
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_MAIN_MODEL = str(SCRIPT_DIR / "model-1k-merge.safetensors")
-DEFAULT_TEXT_ENCODER_DIR = str(SCRIPT_DIR / "Z-Image-Turbo" / "text_encoder")
-DEFAULT_TOKENIZER_DIR = str(SCRIPT_DIR / "Z-Image-Turbo" / "tokenizer")
-DEFAULT_TEXT_ENCODER_SHARDS = [
-    f"{DEFAULT_TEXT_ENCODER_DIR}/model-00001-of-00003.safetensors",
-    f"{DEFAULT_TEXT_ENCODER_DIR}/model-00002-of-00003.safetensors",
-    f"{DEFAULT_TEXT_ENCODER_DIR}/model-00003-of-00003.safetensors",
-]
+MODELS_DIR = Path("models")
+
+DEFAULT_MODEL = "model-1k-merge.safetensors"
+DEFAULT_MODEL_HF_REPO = "zhen-nan/L2P"
+
+DEFAULT_TURBO_REPO = "Z-Image-Turbo"
+DEFAULT_TURBO_HF_REPO = "Tongyi-MAI/Z-Image-Turbo"
+
+DEFAULT_TEXT_ENCODER_DIR = MODELS_DIR / DEFAULT_TURBO_REPO / "text_encoder"
+DEFAULT_TOKENIZER_DIR = MODELS_DIR / DEFAULT_TURBO_REPO / "tokenizer"
+
+
+def _resolve_model_file(model):
+    """Locate a single-file model, downloading from HF if missing.
+
+    Resolution order:
+      1. ``model`` itself exists as a file.
+      2. ``./models/<model>`` exists.
+      3. Download via huggingface_hub into ``./models/``. A name
+         containing ``/`` is parsed as ``<repo_id>/<filename>``; a bare
+         filename is fetched from zhen-nan/L2P.
+    """
+    direct = Path(model)
+    if direct.is_file():
+        return str(direct.resolve())
+    cached = MODELS_DIR / model
+    if cached.is_file():
+        return str(cached.resolve())
+
+    from huggingface_hub import hf_hub_download
+
+    if "/" in model:
+        repo_id, filename = model.rsplit("/", 1)
+    else:
+        repo_id, filename = DEFAULT_MODEL_HF_REPO, model
+
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    sys.stderr.write(f"[download] {repo_id}/{filename} -> {MODELS_DIR}/\n")
+    return hf_hub_download(repo_id=repo_id, filename=filename, local_dir=str(MODELS_DIR))
+
+
+def _resolve_repo_dir(repo):
+    """Locate a repo-directory model, downloading the snapshot if missing.
+
+    Same resolution order as ``_resolve_model_file`` but for directories;
+    the default name is fetched from Tongyi-MAI/Z-Image-Turbo.
+    """
+    direct = Path(repo)
+    if direct.is_dir():
+        return str(direct.resolve())
+    cached = MODELS_DIR / repo
+    if cached.is_dir():
+        return str(cached.resolve())
+
+    from huggingface_hub import snapshot_download
+
+    if "/" in repo:
+        repo_id = repo
+    else:
+        repo_id = f"Tongyi-MAI/{repo}"
+
+    dest = MODELS_DIR / Path(repo).name
+    dest.mkdir(parents=True, exist_ok=True)
+    sys.stderr.write(f"[download] {repo_id} -> {dest}/\n")
+    return snapshot_download(repo_id=repo_id, local_dir=str(dest))
 
 
 def parse_args():
     p = argparse.ArgumentParser(description="Z-Image-Turbo gen API server.")
-    p.add_argument("--main_model", default=DEFAULT_MAIN_MODEL,
-                   help="Path to the main DiT safetensors file.")
-    p.add_argument("--text_encoder", nargs="+", default=DEFAULT_TEXT_ENCODER_SHARDS,
-                   help="One or more text-encoder safetensors shard paths.")
-    p.add_argument("--tokenizer", default=DEFAULT_TOKENIZER_DIR,
-                   help="Path to the tokenizer directory.")
+    p.add_argument("--model", default=DEFAULT_MODEL,
+                   help="DiT safetensors file. Local path, ./models/<name>, "
+                        "or HF reference (owner/repo/filename, or bare name "
+                        "which is fetched from zhen-nan/L2P).")
+    p.add_argument("--z_image_turbo_repo", default=DEFAULT_TURBO_REPO,
+                   help="Z-Image-Turbo directory containing text_encoder/ and "
+                        "tokenizer/. Local dir, ./models/<name>, or HF repo id.")
     p.add_argument("--dtype", default="bfloat16",
                    choices=["bfloat16", "float16", "float32"])
     p.add_argument("--device", default="cuda",
@@ -237,15 +294,25 @@ def main():
     args = parse_args()
     dtype = _torch_dtype(args.dtype)
 
-    print(f"Loading Z-Image pipeline (main_model={args.main_model}, dtype={args.dtype}, device={args.device}) ...")
+    model_path = _resolve_model_file(args.model)
+    turbo_dir = Path(_resolve_repo_dir(args.z_image_turbo_repo))
+    text_encoder_dir = turbo_dir / "text_encoder"
+    tokenizer_dir = turbo_dir / "tokenizer"
+    text_encoder_shards = [
+        str(text_encoder_dir / "model-00001-of-00003.safetensors"),
+        str(text_encoder_dir / "model-00002-of-00003.safetensors"),
+        str(text_encoder_dir / "model-00003-of-00003.safetensors"),
+    ]
+
+    print(f"Loading Z-Image pipeline (model={model_path}, dtype={args.dtype}, device={args.device}) ...")
     pipe = ZImagePipeline.from_pretrained(
         torch_dtype=dtype,
         device=args.device,
         model_configs=[
-            ModelConfig(path=[args.main_model]),
-            ModelConfig(path=list(args.text_encoder)),
+            ModelConfig(path=[model_path]),
+            ModelConfig(path=text_encoder_shards),
         ],
-        tokenizer_config=ModelConfig(path=args.tokenizer),
+        tokenizer_config=ModelConfig(path=str(tokenizer_dir)),
     )
 
     handler_cls = _make_handler(pipe, args)
