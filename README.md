@@ -57,6 +57,12 @@ Run it with any of the following:
 * `python server.py --model SenseNova-U1-A3B-MoT-SFT`
 * `python server.py --model SenseNova-U1-A3B-MoT`
 
+## NucleusAI/Nucleus-Image
+For [NucleusAI/Nucleus-Image](https://huggingface.co/NucleusAI/Nucleus-Image), copy the
+[examples/nucleusai-nucleus-image.py](examples/nucleusai-nucleus-image.py) file to `server.py`.
+
+* Run it with `python server.py` (auto-downloads weights)
+
 # Development
 
 ## Use ComfyTyped
