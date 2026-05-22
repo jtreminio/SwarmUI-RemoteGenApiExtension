@@ -28,7 +28,7 @@ SUPPORTED_ASPECT_RATIOS (defaulting to 1:1).
 Example:
 
     python gen_api_server.py \\
-        --host 0.0.0.0 --port 7802 \\
+        --host 127.0.0.1 --port 7802 \\
         --steps 4 --cfg 1.0 --repo_id ./models/Lens-Turbo
 
     curl -X POST http://localhost:7802/generate \\
@@ -59,7 +59,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repo_id", type=str, default="microsoft/Lens",
                         help="HF repo id (or local path) of the assembled "
                              "Lens pipeline (model_index.json + subfolders).")
-    parser.add_argument("--host", type=str, default="0.0.0.0",
+    parser.add_argument("--host", type=str, default="127.0.0.1",
                         help="Bind host for the HTTP server.")
     parser.add_argument("--port", type=int, default=7802,
                         help="Bind port for the HTTP server.")

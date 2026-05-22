@@ -52,7 +52,7 @@ def parse_args():
                    help="Device to load the pipeline onto.")
     p.add_argument("--rand_device", default="cuda",
                    help="Device used by the pipeline's RNG.")
-    p.add_argument("--host", default="0.0.0.0")
+    p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=7802)
     p.add_argument("--steps", type=int, default=30,
                    help="Per-request fallback when 'steps' is omitted.")

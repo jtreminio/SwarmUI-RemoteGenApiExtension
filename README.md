@@ -26,6 +26,10 @@ Then on SwarmUI under the "Remote Gen API URL" textbox, paste `http://127.0.0.1:
 * seed/steps/cfg/width/height are all applied
     * if you create a custom server, you must implement these yourself
 
+For the server files, some sane defaults have been selected:
+* `--host` defaults to `127.0.0.1`
+* `--port` defaults to `7802`
+
 ### Microsoft Lens
 
 For [Microsoft Lens](https://github.com/microsoft/Lens), follow their installation instructions.
@@ -34,11 +38,11 @@ For [Microsoft Lens](https://github.com/microsoft/Lens), follow their installati
 * Clone [microsoft/Lens-Turbo](https://huggingface.co/microsoft/Lens-Turbo) to folder `Lens-Turbo` in repo root
 * Clone [microsoft/Lens](https://huggingface.co/microsoft/Lens) to folder `Lens` in repo root
 
-Then just copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to repo root, next to
+Then just copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to `server.py` repo root, next to
 [inference.py](https://github.com/microsoft/Lens/blob/main/inference.py).
 
-* For Lens-Turbo, run it with `python microsoft-lens.py --repo_id ./Lens-Turbo --host 127.0.0.1 --port 7802`.
-* For Lens (non-Turbo), run it with `python microsoft-lens.py --repo_id ./Lens --host 127.0.0.1 --port 7802`.
+* For Lens-Turbo, run it with `python server.py --model ./Lens-Turbo`.
+* For Lens (non-Turbo), run it with `python server.py --model ./Lens`.
 
 ## TencentYoutuResearch/T2I-L2P (Z-Image Pixel Space)
 For [TencentYoutuResearch/T2I-L2P](https://github.com/TencentYoutuResearch/T2I-L2P), follow their installation instructions.
@@ -47,8 +51,10 @@ For [TencentYoutuResearch/T2I-L2P](https://github.com/TencentYoutuResearch/T2I-L
 * Clone [Tongyi-MAI/Z-Image-Turbo](https://huggingface.co/Tongyi-MAI/Z-Image-Turbo) to folder `Z-Image-Turbo` in
     repo root (you only need `text_encoder` and `tokenizer` directory)
 
-Then just copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file into repo root,
+Then just copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file to `server.py` repo root,
 next to [inference.py](https://github.com/TencentYoutuResearch/T2I-L2P/blob/main/inference.py).
+
+* Run as `python server.py`
 
 # Development
 
