@@ -16,6 +16,12 @@ public static class Runner
         {
             return null;
         }
+        if (g.UserInput.TryGet(T2IParamTypes.InitImage, out _)
+            && g.UserInput.TryGet(T2IParamTypes.InitImageCreativity, out double creativity)
+            && creativity == 0.0)
+        {
+            return null;
+        }
         return serverUrl.Trim();
     }
 
