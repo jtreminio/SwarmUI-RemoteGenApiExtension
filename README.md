@@ -14,13 +14,9 @@ Microsoft Lens. As I play with more new image models I will continue adding more
 
 ## Get Started
 
-For [Microsoft Lens](https://github.com/microsoft/Lens), follow their installation instructions.
-Then just copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file into the same
-directory with the repo, next to [inference.py](https://github.com/microsoft/Lens/blob/main/inference.py).
-
-Run it with `python inference_server.py --repo_id ./models/Lens-Turbo --host 127.0.0.1 --port 7802`.
-You can use `0.0.0.0` instead of `127.0.0.1` if you need to access the server from a different machine.
-Note that this is potentially unsafe since it opens the server to all internet traffic.
+You can use `0.0.0.0` instead of `127.0.0.1` in instructions below, if you need to access
+the server from a different machine. Note that this is potentially unsafe since it opens
+the server to all internet traffic.
 
 Then on SwarmUI under the "Remote Gen API URL" textbox, paste `http://127.0.0.1:7802/generate`.
 
@@ -29,6 +25,30 @@ Then on SwarmUI under the "Remote Gen API URL" textbox, paste `http://127.0.0.1:
 * You can upscale/refine/etc as normal afterward
 * seed/steps/cfg/width/height are all applied
     * if you create a custom server, you must implement these yourself
+
+### Microsoft Lens
+
+For [Microsoft Lens](https://github.com/microsoft/Lens), follow their installation instructions.
+
+* [Download model-1k-merge.safetensors](https://huggingface.co/zhen-nan/L2P/blob/main/model-1k-merge.safetensors) to repo root
+* Clone [microsoft/Lens-Turbo](https://huggingface.co/microsoft/Lens-Turbo) to folder `Lens-Turbo` in repo root
+* Clone [microsoft/Lens](https://huggingface.co/microsoft/Lens) to folder `Lens` in repo root
+
+Then just copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to repo root, next to
+[inference.py](https://github.com/microsoft/Lens/blob/main/inference.py).
+
+* For Lens-Turbo, run it with `python microsoft-lens.py --repo_id ./Lens-Turbo --host 127.0.0.1 --port 7802`.
+* For Lens (non-Turbo), run it with `python microsoft-lens.py --repo_id ./Lens --host 127.0.0.1 --port 7802`.
+
+## TencentYoutuResearch/T2I-L2P (Z-Image Pixel Space)
+For [TencentYoutuResearch/T2I-L2P](https://github.com/TencentYoutuResearch/T2I-L2P), follow their installation instructions.
+
+* [Download model-1k-merge.safetensors](https://huggingface.co/zhen-nan/L2P/blob/main/model-1k-merge.safetensors) to repo root
+* Clone [Tongyi-MAI/Z-Image-Turbo](https://huggingface.co/Tongyi-MAI/Z-Image-Turbo) to folder `Z-Image-Turbo` in
+    repo root (you only need `text_encoder` and `tokenizer` directory)
+
+Then just copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file into repo root,
+next to [inference.py](https://github.com/TencentYoutuResearch/T2I-L2P/blob/main/inference.py).
 
 # Development
 
