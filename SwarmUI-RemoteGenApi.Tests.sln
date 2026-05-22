@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwarmUI-RemoteGenApiExtension", "SwarmUI-RemoteGenApiExtension.csproj", "{DCA23D65-89B5-4A76-8C5B-60FC96DEA249}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7557}") = "SwarmUI-RemoteGenApiExtension.Tests", "Tests\SwarmUI-RemoteGenApiExtension.Tests.csproj", "{B1F235A9-7C8D-4B62-9F33-2A1D78F02711}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCA23D65-89B5-4A76-8C5B-60FC96DEA249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCA23D65-89B5-4A76-8C5B-60FC96DEA249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCA23D65-89B5-4A76-8C5B-60FC96DEA249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCA23D65-89B5-4A76-8C5B-60FC96DEA249}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{B1F235A9-7C8D-4B62-9F33-2A1D78F02711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F235A9-7C8D-4B62-9F33-2A1D78F02711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F235A9-7C8D-4B62-9F33-2A1D78F02711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F235A9-7C8D-4B62-9F33-2A1D78F02711}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <AssemblyName>SwarmUI-RemoteGenApiExtension</AssemblyName>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>annotations</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Required for IDE0005 (unused using directives) to fire at build time. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- ...but we don't actually want to publish XML docs or warn about missing ones. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <Import Project="../../SwarmUI.extension.props" />
+
+  <ItemGroup Condition="Exists('../../SwarmUI.csproj')">
+    <Reference Remove="SwarmUI" />
+    <ProjectReference Include="../../SwarmUI.csproj">
+      <Private>false</Private>
+      <Properties>_EnableMacOSCodeSign=false;StaticWebAssetsEnabled=false</Properties>
+      <GlobalPropertiesToRemove>BaseIntermediateOutputPath;TargetName</GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SwarmUI-RemoteGenApi.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ComfyTyped">
+      <HintPath>lib/ComfyTyped.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin/**/*.cs" />
+    <Compile Remove="obj/**/*.cs" />
+    <Compile Remove="Tests/**/*.cs" />
+    <Compile Remove="**/._*" />
+  </ItemGroup>
+
+</Project>
