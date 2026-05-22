@@ -9,8 +9,8 @@ model you want to try out, and get back an image which you can then save as-is v
 regular workflow like refining, upscaling, editing, etc.
 
 This extension does require some programming knowledge, at least to get the initial server wrapper built.
-I've included the [examples/microsoft-lens.py](examples/microsoft-lens.py) file if you'd like to try out
-Microsoft Lens. As I play with more new image models I will continue adding more examples you can use yourself.
+I've included [several examples](#get-started) to get you started quickly and painlessly.
+As I play with more new image models I will continue adding more examples you can use yourself.
 
 ## Get Started
 
