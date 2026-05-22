@@ -5,6 +5,11 @@ text-to-image model. Every server must expose the **same API contract**
 described below — only the model-loading and the
 width/height-to-pipeline mapping change per model.
 
+## Follow existing examples
+
+Use the existing examples as your guide, https://github.com/jtreminio/SwarmUI-RemoteGenApiExtension/blob/main/examples/
+Make sure to follow the auto-download pattern found.
+
 ## Inputs you'll be given
 
 1. A working **single-shot CLI inference script** for the target model
@@ -34,6 +39,7 @@ All servers expose the same API regardless of the underlying model.
 | `cfg`             | float       | no       | Falls back to server CLI default. Accept int as float. |
 | `seed`            | int \| null | no       | Falls back to server CLI default. Reject bools. |
 | `negative_prompt` | string      | no       | Pass through if the pipeline supports it; otherwise silently ignore — **do not log**. |
+| `thinking`        | bool        | no       | Defaults to `false`. Enables thinking or prompt enhancement mode if the pipeline supports it; otherwise silently ignore. |
 
 Unknown fields are ignored. Reject `bool` for any int/float field
 (`isinstance(True, int)` is `True` in Python — explicit check needed).

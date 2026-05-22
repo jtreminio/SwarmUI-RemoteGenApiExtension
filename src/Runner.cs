@@ -43,6 +43,7 @@ public static class Runner
             Seed: g.UserInput.Get(T2IParamTypes.Seed, -1),
             Steps: g.UserInput.Get(T2IParamTypes.Steps, 20),
             Cfg: g.UserInput.Get(T2IParamTypes.CFGScale, 4.0),
+            Thinking: g.UserInput.Get(RemoteGenApiExtension.Thinking, false),
             TimeoutSeconds: g.UserInput.Get(RemoteGenApiExtension.TimeoutSeconds, 120));
 
         Logs.Debug($"SwarmUI Remote Gen API: inserted remote node '{serverUrl}' as id '{nodeId}'");

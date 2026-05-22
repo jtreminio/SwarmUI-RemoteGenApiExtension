@@ -16,6 +16,7 @@ public class RemoteGenApiExtension : Extension
 
     public static T2IRegisteredParam<string> ServerUrl;
     public static T2IRegisteredParam<float> TimeoutSeconds;
+    public static T2IRegisteredParam<bool> Thinking;
     public static T2IParamGroup RemoteGenApiGroup;
 
     public override void OnInit()
@@ -59,6 +60,15 @@ public class RemoteGenApiExtension : Extension
             Group: RemoteGenApiGroup,
             FeatureFlag: FeatureFlag,
             OrderPriority: 2
+        ));
+
+        Thinking = T2IParamTypes.Register<bool>(new T2IParamType(
+            Name: "Remote Gen API Thinking",
+            Description: "Enables thinking or prompt enhancement mode on the remote server, if the underlying pipeline supports it.",
+            Default: "false",
+            Group: RemoteGenApiGroup,
+            FeatureFlag: FeatureFlag,
+            OrderPriority: 3
         ));
 
         WorkflowGenerator.AddStep(Runner.InsertRemoteGenApiBase, BaseStepPriority);

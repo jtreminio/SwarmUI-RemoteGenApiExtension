@@ -79,8 +79,8 @@ class SwarmRemoteGenApi(io.ComfyNode):
             description=(
                 "Calls a remote generation API server with a prompt and returns the generated "
                 "image. The server must accept POST JSON with {prompt, negative_prompt, width, "
-                "height, seed, steps, cfg} and respond with JSON containing a base64-encoded "
-                "image under one of: 'image', 'image_base64', or 'data'."
+                "height, seed, steps, cfg, thinking} and respond with JSON containing a "
+                "base64-encoded image under one of: 'image', 'image_base64', or 'data'."
             ),
             inputs=[
                 io.String.Input("server_url", default=DEFAULT_SERVER_URL),
@@ -91,6 +91,7 @@ class SwarmRemoteGenApi(io.ComfyNode):
                 io.Int.Input("seed", default=0, min=MIN_SEED, max=MAX_SEED),
                 io.Int.Input("steps", default=DEFAULT_STEPS, min=MIN_STEPS, max=MAX_STEPS),
                 io.Float.Input("cfg", default=DEFAULT_CFG, min=MIN_CFG, max=MAX_CFG, step=0.1),
+                io.Boolean.Input("thinking", default=False),
                 io.Float.Input(
                     "timeout_seconds",
                     optional=True,
@@ -118,6 +119,7 @@ class SwarmRemoteGenApi(io.ComfyNode):
         seed: int,
         steps: int,
         cfg: float,
+        thinking: bool = False,
         timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS,
         pixels: torch.Tensor | None = None,
     ) -> io.NodeOutput:
@@ -133,6 +135,7 @@ class SwarmRemoteGenApi(io.ComfyNode):
             "seed": int(seed),
             "steps": int(steps),
             "cfg": float(cfg),
+            "thinking": bool(thinking),
         }
         try:
             result = _post_json(url, payload, timeout=timeout_seconds)

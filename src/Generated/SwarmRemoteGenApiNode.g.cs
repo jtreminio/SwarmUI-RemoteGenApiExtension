@@ -5,7 +5,7 @@ using ComfyTyped.Types;
 
 namespace RemoteGenApiExtension.Generated;
 
-/// <summary>Calls a remote generation API server with a prompt and returns the generated image. The server must accept POST JSON with {prompt, negative_prompt, width, height, seed, steps, cfg} and respond with JSON containing a base64-encoded image under one of: 'image', 'image_base64', or 'data'.</summary>
+/// <summary>Calls a remote generation API server with a prompt and returns the generated image. The server must accept POST JSON with {prompt, negative_prompt, width, height, seed, steps, cfg, thinking} and respond with JSON containing a base64-encoded image under one of: 'image', 'image_base64', or 'data'.</summary>
 /// <remarks>Category: SwarmUI/remote_gen_api</remarks>
 public sealed class SwarmRemoteGenApiNode : ComfyNode
 {
@@ -25,6 +25,7 @@ public sealed class SwarmRemoteGenApiNode : ComfyNode
     public NodeInput<IntType> Seed { get; }
     public NodeInput<IntType> Steps { get; }
     public NodeInput<FloatType> Cfg { get; }
+    public NodeInput<BooleanType> Thinking { get; }
     public NodeInput<FloatType> TimeoutSeconds { get; } // optional
     public NodeInput<ImageType> Pixels { get; } // optional
 
@@ -47,6 +48,8 @@ public sealed class SwarmRemoteGenApiNode : ComfyNode
         Steps.Set(20L);
         Cfg = AddInput<FloatType>("cfg", required: true);
         Cfg.Set(7.0);
+        Thinking = AddInput<BooleanType>("thinking", required: true);
+        Thinking.Set(false);
         TimeoutSeconds = AddInput<FloatType>("timeout_seconds", required: false);
         TimeoutSeconds.Set(120.0);
         Pixels = AddInput<ImageType>("pixels", required: false);
@@ -64,6 +67,7 @@ public sealed class SwarmRemoteGenApiNode : ComfyNode
         long? Seed = null,
         long? Steps = null,
         double? Cfg = null,
+        bool? Thinking = null,
         double? TimeoutSeconds = null
     )
     {
@@ -75,6 +79,7 @@ public sealed class SwarmRemoteGenApiNode : ComfyNode
         if (Seed is { } v_Seed) this.Seed.Set(v_Seed);
         if (Steps is { } v_Steps) this.Steps.Set(v_Steps);
         if (Cfg is { } v_Cfg) this.Cfg.Set(v_Cfg);
+        if (Thinking is { } v_Thinking) this.Thinking.Set(v_Thinking);
         if (TimeoutSeconds is { } v_TimeoutSeconds) this.TimeoutSeconds.Set(v_TimeoutSeconds);
         return this;
     }

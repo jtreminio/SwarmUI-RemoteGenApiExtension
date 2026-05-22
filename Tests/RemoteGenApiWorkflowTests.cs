@@ -69,6 +69,28 @@ public class RemoteGenApiWorkflowTests
     }
 
     [Fact]
+    public void Thinking_defaults_to_false_on_remote_node()
+    {
+        T2IParamInput input = Fixtures.BuildInput();
+        JObject workflow = WorkflowTestHarness.GenerateWith(input);
+
+        using WorkflowBridge bridge = WorkflowBridge.Create(workflow);
+        SwarmRemoteGenApiNode remote = bridge.Graph.NodesOfType<SwarmRemoteGenApiNode>().Single();
+        Assert.False(remote.Thinking.Value);
+    }
+
+    [Fact]
+    public void Thinking_user_input_flows_through_to_remote_node()
+    {
+        T2IParamInput input = Fixtures.BuildInput(thinking: true);
+        JObject workflow = WorkflowTestHarness.GenerateWith(input);
+
+        using WorkflowBridge bridge = WorkflowBridge.Create(workflow);
+        SwarmRemoteGenApiNode remote = bridge.Graph.NodesOfType<SwarmRemoteGenApiNode>().Single();
+        Assert.True(remote.Thinking.Value);
+    }
+
+    [Fact]
     public void Prune_keeps_chain_connected_to_save()
     {
         T2IParamInput input = Fixtures.BuildInput();

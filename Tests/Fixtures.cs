@@ -13,7 +13,8 @@ internal static class Fixtures
         int height = 512,
         int steps = 20,
         double cfg = 4.0,
-        float? timeoutSeconds = null)
+        float? timeoutSeconds = null,
+        bool? thinking = null)
     {
         _ = WorkflowTestHarness.ExtensionSteps();
         T2IParamInput input = new(null);
@@ -31,6 +32,10 @@ internal static class Fixtures
         if (timeoutSeconds.HasValue)
         {
             input.Set(ExtensionClass.TimeoutSeconds, timeoutSeconds.Value);
+        }
+        if (thinking.HasValue)
+        {
+            input.Set(ExtensionClass.Thinking, thinking.Value);
         }
         return input;
     }

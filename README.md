@@ -33,19 +33,29 @@ For the server files, some sane defaults have been selected:
 ### Microsoft Lens
 
 For [Microsoft Lens](https://github.com/microsoft/Lens), follow their installation instructions.
-Copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to `server.py` repo root, next to
-[inference.py](https://github.com/microsoft/Lens/blob/main/inference.py).
+Copy the [examples/microsoft-lens.py](examples/microsoft-lens.py) file to `server.py` repo root.
 
 * For Lens-Turbo, run it with `python server.py --model Lens-Turbo`.
 * For Lens (non-Turbo), run it with `python server.py --model Lens`.
 
 ## TencentYoutuResearch/T2I-L2P (Z-Image Pixel Space)
 For [TencentYoutuResearch/T2I-L2P](https://github.com/TencentYoutuResearch/T2I-L2P), follow their installation instructions.
-
-Copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file to `server.py` repo root,
-next to [inference.py](https://github.com/TencentYoutuResearch/T2I-L2P/blob/main/inference.py).
+Copy the [examples/tencentyouturesearch-T2I-L2P.py](examples/tencentyouturesearch-T2I-L2P.py) file to `server.py` repo root.
 
 * Run it with `python server.py`
+
+### OpenSenseNova/SenseNova-U1
+
+For [OpenSenseNova/SenseNova-U1](https://github.com/OpenSenseNova/SenseNova-U1), follow their installation instructions.
+Copy the [examples/opensensenova-sensenova-u1.py](examples/opensensenova-sensenova-u1.py) file to `server.py` repo root.
+
+Run it with any of the following:
+
+* `python server.py --model SenseNova-U1-8B-MoT-Infographic` (default)
+* `python server.py --model SenseNova-U1-8B-MoT-SFT`
+* `python server.py --model SenseNova-U1-8B-MoT	8B`
+* `python server.py --model SenseNova-U1-A3B-MoT-SFT`
+* `python server.py --model SenseNova-U1-A3B-MoT`
 
 # Development
 
